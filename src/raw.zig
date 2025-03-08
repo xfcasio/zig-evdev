@@ -221,9 +221,18 @@ pub const Device = struct {
         const rc = c.libevdev_next_event(self.dev, flags, &ev);
         switch (rc) {
             c.LIBEVDEV_READ_STATUS_SUCCESS, c.LIBEVDEV_READ_STATUS_SYNC => {
+                const timeval = std.posix.timeval;
+
+                const time: timeval = if (@hasField(timeval, "sec") and @hasField(timeval, "usec"))
+                    .{ .sec = ev.time.tv_sec, .usec = ev.time.tv_usec }
+                else if (@hasField(timeval, "tv_sec") and @hasField(timeval, "tv_usec"))
+                    .{ .tv_sec = ev.time.tv_sec, .tv_usec = ev.time.tv_usec }
+                else
+                    @compileError("System architecture has unknown shape for std.posix.timeval");
+
                 const e = Event{
                     .code = Event.Code.new(Event.Type.new(ev.type), ev.code),
-                    .time = .{ .tv_sec = ev.time.tv_sec, .tv_usec = ev.time.tv_usec },
+                    .time = time,
                     .value = ev.value,
                 };
                 log.debug("event received: {s} {s}: {} (device: {s})", .{

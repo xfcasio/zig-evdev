@@ -6,22 +6,22 @@ const Event = @import("Event");
 test "Type.getName" {
     var ty: Event.Type = undefined;
 
-    ty = .SYN;
+    ty = .syn;
     try t.expectEqualStrings(ty.getName(), "EV_SYN");
 
-    ty = .FF_STATUS;
+    ty = .ff_status;
     try t.expectEqualStrings(ty.getName(), "EV_FF_STATUS");
 }
 
 test "Type.CodeType" {
-    try t.expectEqual(Event.Type.KEY.CodeType(), Event.Code.KEY);
-    try t.expectEqual(Event.Type.MSC.CodeType(), Event.Code.MSC);
+    try t.expectEqual(Event.Type.key.CodeType(), Event.Code.KEY);
+    try t.expectEqual(Event.Type.msc.CodeType(), Event.Code.MSC);
 }
 
 test "Code.getName" {
     var c: Event.Code = undefined;
 
-    c = .{ .SYN = .SYN_REPORT };
+    c = .{ .syn = .SYN_REPORT };
     try t.expectEqualStrings(c.getName().?, "SYN_REPORT");
 
     c = Event.Code.PWR.new(0).intoCode();
@@ -29,11 +29,11 @@ test "Code.getName" {
 }
 
 test "Code.getType" {
-    try t.expectEqual((Event.Code{ .REL = .REL_X }).getType(), Event.Type.REL);
-    try t.expectEqual((Event.Code{ .LED = .LED_CAPSL }).getType(), Event.Type.LED);
+    try t.expectEqual((Event.Code{ .rel = .REL_X }).getType(), Event.Type.rel);
+    try t.expectEqual((Event.Code{ .led = .LED_CAPSL }).getType(), Event.Type.led);
 }
 
 test "Code.XXX.intoCode" {
-    try t.expectEqual(Event.Code.KEY.KEY_1.intoCode(), Event.Code{ .KEY = .KEY_1 });
-    try t.expectEqual(Event.Code.PWR.new(0).intoCode(), Event.Code.new(.PWR, 0));
+    try t.expectEqual(Event.Code.KEY.KEY_1.intoCode(), Event.Code{ .key = .KEY_1 });
+    try t.expectEqual(Event.Code.PWR.new(0).intoCode(), Event.Code.new(.pwr, 0));
 }

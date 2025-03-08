@@ -1,6 +1,7 @@
 .{
-    .name = "zig-evdev",
-    .version = "0.0.0",
+    .name = .evdev,
+    .fingerprint = 0x3796d87768aac4d6,
+    .version = "0.1.0",
 
     .paths = .{
         "build",
@@ -11,7 +12,7 @@
         "README.md",
     },
 
-    .minimum_zig_version = "0.13.0",
+    .minimum_zig_version = "0.14.0",
 
     .dependencies = .{
         .libevdev = .{
